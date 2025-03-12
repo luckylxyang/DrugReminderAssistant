@@ -1,0 +1,36 @@
+<view class="container">
+  <!-- 状态标签栏 -->
+  <view class="status-tabs">
+    <view class="tab {{currentStatus === 'all' ? 'active' : ''}}" bindtap="switchStatus" data-status="all">全部</view>
+    <view class="tab {{currentStatus === 'ongoing' ? 'active' : ''}}" bindtap="switchStatus" data-status="ongoing">进行中</view>
+    <view class="tab {{currentStatus === 'stopped' ? 'active' : ''}}" bindtap="switchStatus" data-status="stopped">已停用</view>
+    <view class="tab {{currentStatus === 'expired' ? 'active' : ''}}" bindtap="switchStatus" data-status="expired">已过期</view>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-box">
+    <input type="text" placeholder="搜索药品名称" bindinput="onSearch" value="{{searchKeyword}}" />
+  </view>
+
+  <!-- 药品列表 -->
+  <scroll-view class="medicine-list" scroll-y="true" bindscrolltolower="loadMore" refresher-enabled="{{true}}" refresher-triggered="{{isRefreshing}}" bindrefresherrefresh="onRefresh">
+    <block wx:for="{{medicationPlans}}" wx:key="_id">
+      <view class="medicine-item" bindtap="viewDetail" data-id="{{item._id}}">
+        <view class="medicine-info">
+          <view class="medicine-name">{{item.drug_name}}</view>
+          <view class="medicine-details">
+            <text>{{item.frequency}}</text>
+            <text>剩余: {{item.remaining}}{{item.drug_dosage_unit}}</text>
+          </view>
+        </view>
+        <view class="medicine-status {{item.status}}">
+          {{item.statusText}}
+        </view>
+      </view>
+    </block>
+
+    <!-- 加载更多 -->
+    <view class="loading" wx:if="{{isLoading}}">加载中...</view>
+    <view class="no-more" wx:if="{{noMore}}">没有更多数据了</view>
+  </scroll-view>
+</view>

@@ -1,23 +1,17 @@
 <view class="container">
-  <!-- 顶部标题栏 -->
-  <view class="header">
-    <view class="title">用药提醒</view>
-    <view class="notification-icon"><!-- 通知图标 -->
-      <image src="/imgs/notification.png" mode="aspectFit"></image>
-    </view>
-  </view>
-
-  <!-- 日期显示 -->
-  <view class="date-container">
-    <view class="date">{{date}}</view>
-    <view class="weekday">{{weekday}}</view>
-  </view>
 
   <!-- 重要药物提醒 -->
   <view class="important-reminder" wx:if="{{hasImportantMedicine}}">
     <view class="warning-icon">⚠️</view>
     <view class="warning-text">{{importantMedicineMessage}}</view>
   </view>
+  
+  <!-- 日期显示 -->
+  <view class="date-container">
+    <view class="date">{{date}}</view>
+    <view class="weekday">{{weekday}}</view>
+  </view>
+
 
   <!-- 待服用药物列表 -->
   <view class="section-title">待服用药物</view>

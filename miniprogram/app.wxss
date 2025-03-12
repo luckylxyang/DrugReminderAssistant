@@ -1,0 +1,19 @@
+/* app.wxss */
+:root {
+    --global-font-size: 16px; /* 默认字体大小 */
+    --primary-color: #1aad19; /* 主题色 */
+    --text-color: #333333; /* 文字颜色 */
+    --border-radius: 32rpx;
+  }
+  
+  /* 全局字体大小适配 */
+  body {
+    font-size: var(--global-font-size);
+    color: var(--text-color);
+  }
+  
+  /* 示例：按钮主题色 */
+  button {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }

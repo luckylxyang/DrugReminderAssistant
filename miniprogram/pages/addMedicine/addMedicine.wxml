@@ -1,109 +1,100 @@
 <view class="container">
-  <!-- 顶部标题栏 -->
-  <view class="header">
-    <view class="back-icon" bindtap="goBack">
-      <image src="/imgs/arrow.png" mode="aspectFit"></image>
-    </view>
-    <view class="title">添加药品</view>
-    <view class="save-btn" bindtap="saveDraft">保存</view>
-  </view>
-
-  <!-- 药品信息 -->
-  <view class="section">
-    <view class="section-title">药品信息</view>
-    <view class="input-group">
-      <input class="input-field" placeholder="请输入药品名称" bindinput="inputMedicineName" value="{{medicineName}}">
-        <view class="voice-icon" slot="suffix">
-          <image src="/imgs/voice.png" mode="aspectFit"></image>
+    <!-- 药品信息 -->
+    <view class="section">
+        <view class="section-header">
+            <view >药品信息</view>
+            <image src="/imgs/ic_scan.png" mode="aspectFit" class="section-scan"></image>
         </view>
-      </input>
-    </view>
-    
-    <view class="input-group">
-      <picker bindchange="dosageTypeChange" value="{{dosageTypeIndex}}" range="{{dosageTypes}}">
-        <view class="picker-field">
-          <text>{{dosageTypes[dosageTypeIndex] || '请输入剂量'}}</text>
-          <text class="arrow-icon">▼</text>
+
+        <view class="input-group">
+            <input class="input-field" placeholder="请输入药品名称" bindinput="inputMedicineName" value="{{medicineName}}"></input>
+            <view class="voice-icon">
+                <image src="/imgs/ic_voice.png" mode="aspectFit"></image>
+            </view>
         </view>
-      </picker>
-    </view>
-    
-    <view class="input-group">
-      <input class="input-field" placeholder="请输入生产商（选填）" bindinput="inputManufacturer" value="{{manufacturer}}"></input>
-    </view>
-    
-    <view class="input-group">
-      <textarea class="textarea-field" placeholder="请输入用药说明" bindinput="inputInstructions" value="{{instructions}}">
-        <view class="voice-icon" slot="suffix">
-          <image src="/imgs/voice.png" mode="aspectFit"></image>
+
+        <view class="input-group">
+            <input class="input-field" placeholder="请输入剂量" bindinput="inputMedicineDosage" value="{{dosage}}"></input>
+            <picker bindchange="dosageTypeChange" value="{{dosageTypeIndex}}" range="{{dosageTypes}}">
+                <view class="voice-icon">
+                    <text>{{dosageTypes[dosageTypeIndex] || '请输入剂量'}}</text>
+                    <text class="arrow-icon">▼</text>
+                </view>
+            </picker>
         </view>
-      </textarea>
-    </view>
-  </view>
 
-  <!-- 用药计划 -->
-  <view class="section">
-    <view class="section-title">用药计划</view>
-    <view class="frequency-selector">
-      <view class="frequency-option {{frequency === 'daily' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="daily">每日</view>
-      <view class="frequency-option {{frequency === 'weekly' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="weekly">每周</view>
-      <view class="frequency-option {{frequency === 'custom' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="custom">自定义</view>
-    </view>
-    
-    <view class="time-picker">
-      <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="timeChange">
-        <view class="time-display">
-          <text>{{time}}</text>
-          <view class="clock-icon">
-            <image src="/imgs/clock.png" mode="aspectFit"></image>
-          </view>
+        <view class="input-group">
+            <input class="input-field" placeholder="请输入生产商（选填）" bindinput="inputManufacturer" value="{{manufacturer}}"></input>
         </view>
-      </picker>
-      <view class="delete-time" bindtap="deleteTime">
-        <image src="/imgs/delete.png" mode="aspectFit"></image>
-      </view>
-    </view>
-    
-    <view class="add-time-btn" bindtap="addMedicineTime">
-      <text>+ 添加服药时间</text>
-    </view>
-  </view>
 
-  <!-- 服药时间相关 -->
-  <view class="section">
-    <view class="meal-options">
-      <view class="meal-option {{mealOption === 'before' ? 'active' : ''}}" bindtap="selectMealOption" data-option="before">饭前30分钟</view>
-      <view class="meal-option {{mealOption === 'after' ? 'active' : ''}}" bindtap="selectMealOption" data-option="after">饭后服用</view>
-      <view class="meal-option {{mealOption === 'sleep' ? 'active' : ''}}" bindtap="selectMealOption" data-option="sleep">睡前服用</view>
+        <view class="input-group">
+            <textarea class="textarea-field" placeholder="请输入用药说明" bindinput="inputInstructions" value="{{instructions}}"></textarea>
+            <view class="voice-icon">
+                <image src="/imgs/voice.png" mode="aspectFit"></image>
+            </view>
+        </view>
     </view>
-  </view>
 
-  <!-- 提醒方式 -->
-  <view class="section">
-    <view class="section-title">提醒方式</view>
-    <view class="reminder-options">
-      <view class="reminder-option">
-        <text>应用内推送</text>
-        <switch checked="{{appNotification}}" bindchange="toggleAppNotification"></switch>
-      </view>
-      <view class="reminder-option">
-        <text>短信提醒</text>
-        <switch checked="{{smsNotification}}" bindchange="toggleSmsNotification"></switch>
-      </view>
-      <view class="reminder-option">
-        <text>电话提醒</text>
-        <switch checked="{{phoneNotification}}" bindchange="togglePhoneNotification"></switch>
-      </view>
-    </view>
-    
-    <view class="emergency-contact" bindtap="setupEmergencyContact">
-      <text>紧急联系人设置</text>
-      <view class="arrow-right">
-        <text>></text>
-      </view>
-    </view>
-  </view>
+    <!-- 用药计划 -->
+    <view class="section">
+        <view class="section-title">用药计划</view>
+        <view class="frequency-selector">
+            <view class="frequency-option {{frequency === 'daily' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="daily">每日</view>
+            <view class="frequency-option {{frequency === 'weekly' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="weekly">每周</view>
+            <view class="frequency-option {{frequency === 'custom' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="custom">自定义</view>
+        </view>
 
-  <!-- 底部确认按钮 -->
-  <view class="confirm-btn" bindtap="confirmAdd">确认添加</view>
+        <view class="time-picker">
+            <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="timeChange">
+                <view class="time-display">
+                    <text>{{time}}</text>
+                    <view class="clock-icon">
+                        <image src="/imgs/clock.png" mode="aspectFit"></image>
+                    </view>
+                </view>
+            </picker>
+            <view class="delete-time" bindtap="deleteTime">
+                <image class="meal-option" src="/imgs/ic_delete.png" mode="aspectFit"></image>
+            </view>
+        </view>
+
+        <view class="add-time-btn" bindtap="addMedicineTime">
+            <text>+ 添加服药时间</text>
+        </view>
+
+        <view class="meal-options">
+            <view class="meal-option {{mealOption === 'before' ? 'active' : ''}}" bindtap="selectMealOption" data-option="before">饭前30分钟</view>
+            <view class="meal-option {{mealOption === 'after' ? 'active' : ''}}" bindtap="selectMealOption" data-option="after">饭后服用</view>
+            <view class="meal-option {{mealOption === 'sleep' ? 'active' : ''}}" bindtap="selectMealOption" data-option="sleep">睡前服用</view>
+        </view>
+    </view>
+
+    <!-- 提醒方式 -->
+    <view class="section">
+        <view class="section-title">提醒方式</view>
+        <view class="reminder-options">
+            <view class="reminder-option">
+                <text>应用内推送</text>
+                <switch checked="{{appNotification}}" bindchange="toggleAppNotification"></switch>
+            </view>
+            <view class="reminder-option">
+                <text>短信提醒</text>
+                <switch checked="{{smsNotification}}" bindchange="toggleSmsNotification"></switch>
+            </view>
+            <view class="reminder-option">
+                <text>电话提醒</text>
+                <switch checked="{{phoneNotification}}" bindchange="togglePhoneNotification"></switch>
+            </view>
+        </view>
+
+        <view class="emergency-contact" bindtap="setupEmergencyContact">
+            <text>紧急联系人设置</text>
+            <view class="arrow-right">
+                <text>></text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 底部确认按钮 -->
+    <view class="confirm-btn" bindtap="confirmAdd">确认添加</view>
 </view>

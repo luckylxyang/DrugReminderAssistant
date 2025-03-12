@@ -1,5 +1,5 @@
 /* pages/addMedicine/addMedicine.wxss */
-
+@import "../../app.wxss";
 .container {
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -9,22 +9,6 @@
   padding-bottom: 120rpx;
 }
 
-/* 顶部标题栏 */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30rpx 40rpx;
-  background-color: #2196F3;
-  color: white;
-  position: relative;
-}
-
-.back-icon image {
-  width: 40rpx;
-  height: 40rpx;
-  transform: rotate(180deg);
-}
 
 .title {
   font-size: 36rpx;
@@ -38,39 +22,60 @@
 /* 内容区域 */
 .section {
   background-color: white;
-  margin: 20rpx 0;
+  margin: 20rpx;
   padding: 30rpx;
+  border-radius: 32rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;                  /* 使用 Flexbox 布局 */
+  justify-content: space-between; /* A 和 B 分别位于容器的两端 */
+  align-items: center;  
+  margin-bottom: 10px;
 }
 
 .section-title {
   font-size: 32rpx;
   font-weight: 500;
-  margin-bottom: 30rpx;
+  margin-bottom: 32rpx;
   color: #333;
 }
 
-/* 输入框样式 */
+.section-scan{
+    width: 80rpx;
+    height: 80rpx;
+}
+
 .input-group {
   margin-bottom: 30rpx;
   position: relative;
 }
 
 .input-field {
-  width: 100%;
+  width: calc(100%);
   height: 80rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
+  background-color: #f8f8f8;
+  border-radius: 32rpx;
   padding: 0 30rpx;
   font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .textarea-field {
-  width: 100%;
+  width: calc(100%);
   height: 160rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
+  background-color: #f8f8f8;
+  border-radius: 32rpx;
   padding: 20rpx 30rpx;
   font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .voice-icon {
@@ -78,21 +83,26 @@
   right: 20rpx;
   top: 50%;
   transform: translateY(-50%);
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .voice-icon image {
-  width: 40rpx;
-  height: 40rpx;
+  width: 32rpx;
+  height: 32rpx;
 }
 
-/* 选择器样式 */
 .picker-field {
   width: 100%;
   height: 80rpx;
-  background-color: #f5f5f5;
+  background-color: #f8f8f8;
   border-radius: 8rpx;
   padding: 0 30rpx;
   font-size: 28rpx;
+  color: #333;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -115,7 +125,7 @@
   padding: 20rpx 0;
   background-color: #f5f5f5;
   margin: 0 10rpx;
-  border-radius: 8rpx;
+  border-radius: 32rpx;
   font-size: 28rpx;
   color: #666;
 }
@@ -142,9 +152,9 @@
 
 .time-display {
   flex: 1;
-  height: 80rpx;
+  height: 120rpx;
   background-color: #f5f5f5;
-  border-radius: 8rpx;
+  border-radius: 32rpx;
   padding: 0 30rpx;
   display: flex;
   align-items: center;
@@ -158,6 +168,12 @@
 
 .delete-time {
   margin-left: 20rpx;
+  padding: 20rpx 20rpx;
+  background-color: #f5f5f5;
+  margin: 0 10rpx;
+  width: 80rpx;
+  border-radius: 32rpx;
+  color: #666;
 }
 
 .delete-time image {
@@ -184,7 +200,7 @@
   padding: 20rpx 0;
   background-color: #f5f5f5;
   margin: 0 10rpx;
-  border-radius: 8rpx;
+  border-radius: 32rpx;
   font-size: 28rpx;
   color: #666;
 }

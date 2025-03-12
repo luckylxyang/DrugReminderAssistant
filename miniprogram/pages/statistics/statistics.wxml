@@ -1,0 +1,88 @@
+<view class="container">
+  <!-- 周期选择器 -->
+  <view class="period-selector">
+    <view class="period-tab {{period === 'week' ? 'active' : ''}}" bindtap="switchPeriod" data-period="week">周</view>
+    <view class="period-tab {{period === 'month' ? 'active' : ''}}" bindtap="switchPeriod" data-period="month">月</view>
+    <view class="period-tab {{period === 'quarter' ? 'active' : ''}}" bindtap="switchPeriod" data-period="quarter">季度</view>
+  </view>
+
+  <!-- 数据统计卡片区域 -->
+  <view class="stats-cards">
+    <!-- 服药依从率卡片 -->
+    <view class="stats-card">
+      <view class="card-title">服药依从率</view>
+      <view class="adherence-chart">
+        <view class="chart-container">
+          <view class="circle-progress" style="background: conic-gradient(#007AFF {{adherenceRate * 3.6}}deg, #f5f5f5 0deg)">
+            <view class="inner-circle">
+              <text class="percentage">{{adherenceRate}}%</text>
+            </view>
+          </view>
+        </view>
+        <view class="adherence-change">
+          <text wx:if="{{adherenceChange > 0}}" class="increase">较上周提升 {{adherenceChange}}%</text>
+          <text wx:elif="{{adherenceChange < 0}}" class="decrease">较上周下降 {{Math.abs(adherenceChange)}}%</text>
+          <text wx:else>与上周持平</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 本周期服药次数卡片 -->
+    <view class="stats-card">
+      <view class="card-title">本周期服药</view>
+      <view class="medication-count">
+        <text class="count">{{medicationCount}}</text>
+        <text class="unit">次</text>
+      </view>
+      <view class="medication-change">
+        <text wx:if="{{medicationCountChange > 0}}" class="increase">较上周期增加 {{medicationCountChange}} 次</text>
+        <text wx:elif="{{medicationCountChange < 0}}" class="decrease">较上周期减少 {{Math.abs(medicationCountChange)}} 次</text>
+        <text wx:else>与上周期持平</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服药时间分布图表 -->
+  <view class="stats-section">
+    <view class="section-title">服药时间分布</view>
+    <view class="time-distribution-chart">
+      <!-- 这里将使用Canvas绘制折线图，先用占位元素 -->
+      <canvas canvas-id="timeDistributionChart" class="chart-canvas"></canvas>
+    </view>
+  </view>
+
+  <!-- 服药记录列表 -->
+  <view class="stats-section">
+    <view class="section-title">服药记录</view>
+    <view class="medication-records">
+      <block wx:for="{{medicationRecords}}" wx:key="id">
+        <view class="record-item">
+          <view class="record-info">
+            <view class="drug-name">{{item.drugName}} {{item.dosage}}</view>
+            <view class="record-time">今天 {{item.time}}</view>
+          </view>
+          <view class="record-status {{item.status}}">
+            {{item.statusText}}
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 异常提醒 -->
+  <view class="alert-section" wx:if="{{hasAlert}}">
+    <view class="alert-icon">!</view>
+    <view class="alert-content">
+      <text>{{alertMessage}}</text>
+    </view>
+    <view class="alert-action">
+      <button class="action-btn" bindtap="handleAlert">立即处理</button>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-actions">
+    <button class="action-btn primary" bindtap="generateReport">生成报告</button>
+    <button class="action-btn secondary" bindtap="shareStatistics">分享给家人</button>
+  </view>
+</view>

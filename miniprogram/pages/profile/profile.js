@@ -4,9 +4,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isLoggedIn: false, // 添加登录状态标志
     userInfo: {
-      nickName: '陈明远',
-      phoneNumber: '138****5678',
+      nickName: '',
+      phoneNumber: '',
       avatarUrl: '/imgs/default-avatar.png'
     },
     elderlyMode: false,
@@ -21,6 +22,90 @@ Page({
       title: '设置功能开发中',
       icon: 'none'
     });
+  },
+
+  /**
+   * 处理登录/注册点击
+   */
+  handleLogin: function() {
+    // 先获取用户信息
+    wx.getUserProfile({
+      desc: '用于完善用户资料',
+      success: (res) => {
+        // 获取用户信息成功后，再获取登录凭证
+        wx.login({
+          success: (loginRes) => {
+            if (loginRes.code) {
+              // 这里可以将code和用户信息一起发送到后端进行验证
+              console.log('登录凭证：', loginRes.code);
+              
+              // 登录成功后更新状态
+              this.setData({
+                isLoggedIn: true,
+                userInfo: {
+                  nickName: res.userInfo.nickName,
+                  avatarUrl: res.userInfo.avatarUrl,
+                  phoneNumber: '' // 手机号可以通过其他接口获取
+                }
+              });
+              
+              // 保存用户信息到本地存储
+              wx.setStorageSync('userInfo', res.userInfo);
+              wx.setStorageSync('isLoggedIn', true);
+              
+              wx.showToast({
+                title: '登录成功',
+                icon: 'success'
+              });
+            } else {
+              console.error('登录失败', loginRes);
+              wx.showToast({
+                title: '登录失败',
+                icon: 'none'
+              });
+            }
+          },
+          fail: (err) => {
+            console.error('微信登录失败', err);
+            wx.showToast({
+              title: '登录失败',
+              icon: 'none'
+            });
+          }
+        });
+      },
+      fail: (err) => {
+        console.error('获取用户信息失败', err);
+        wx.showToast({
+          title: '登录失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  getUserInfo:function(e){
+    console.log(e.detail.userInfo);
+      let userInfo = e.detail.userInfo
+      // 登录成功后更新状态
+      this.setData({
+        isLoggedIn: true,
+        userInfo: {
+          nickName: userInfo.nickName,
+          avatarUrl: userInfo.avatarUrl,
+          phoneNumber: '' // 手机号可以通过其他接口获取
+        }
+      });
+      
+      // 保存用户信息到本地存储
+      wx.setStorageSync('userInfo', userInfo);
+      wx.setStorageSync('isLoggedIn', true);
+      
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success'
+      });
+
   },
 
   /**
@@ -101,107 +186,26 @@ Page({
       content: '确定要退出登录吗？',
       success: (res) => {
         if (res.confirm) {
-          // 这里可以添加退出登录的具体实现逻辑
+          // 清除登录状态和用户信息
+          this.setData({
+            isLoggedIn: false,
+            userInfo: {
+              nickName: '',
+              phoneNumber: '',
+              avatarUrl: '/imgs/default-avatar.png'
+            }
+          });
+          
+          // 清除本地存储的登录信息
+          wx.removeStorageSync('userInfo');
+          wx.removeStorageSync('isLoggedIn');
+          
           wx.showToast({
             title: '已退出登录',
-            icon: 'success',
-            success: () => {
-              // 可以跳转到登录页面
-              // wx.redirectTo({
-              //   url: '/pages/login/login',
-              // });
-            }
+            icon: 'success'
           });
         }
       }
     });
-  },
-
-  /**
-   * 切换底部标签页
-   */
-  switchTab: function(e) {
-    const tab = e.currentTarget.dataset.tab;
-    
-    // 根据不同的标签页跳转到对应的页面
-    switch(tab) {
-      case 'home':
-        wx.redirectTo({
-          url: '/pages/home/home'
-        });
-        break;
-      case 'medicine':
-        wx.showToast({
-          title: '用药页面开发中',
-          icon: 'none'
-        });
-        break;
-      case 'calendar':
-        wx.showToast({
-          title: '日程页面开发中',
-          icon: 'none'
-        });
-        break;
-      case 'profile':
-        // 当前页面，不做跳转
-        break;
-    }
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    // 可以在这里获取用户信息
-    // 例如从缓存中获取用户信息或者调用接口获取
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   }
 })

@@ -1,87 +1,74 @@
 <view class="container">
-  <!-- 顶部标题栏 -->
-  <view class="header">
-    <view class="title">个人中心</view>
-    <view class="settings-icon" bindtap="openSettings">
-      <image src="/imgs/settings.png" mode="aspectFit"></image>
+
+  <!-- 未登录状态 -->
+  <view wx:if="{{!isLoggedIn}}" class="not-logged-in">
+    <view class="default-avatar">
+      <image src="/imgs/default-avatar.png" mode="aspectFill"></image>
     </view>
+    <view class="login-btn"  bindtap="handleLogin">登录/注册</view>
+    <view class="login-tip">登录后查看更多信息</view>
   </view>
 
-  <!-- 用户信息区域 -->
-  <view class="user-info-card">
-    <view class="user-avatar">
-      <image src="{{userInfo.avatarUrl || '/imgs/default-avatar.png'}}" mode="aspectFill"></image>
+  <!-- 已登录状态 -->
+  <block wx:else>
+    <!-- 用户信息区域 -->
+    <view class="user-info-card">
+      <view class="user-avatar">
+        <!-- <image src="{{userInfo.avatarUrl || '/imgs/default-avatar.png'}}" mode="aspectFill"></image> -->
+        <open-data type="userAvatarUrl"></open-data>
+      </view>
+      <view class="user-details">
+        <open-data class="user-name" type="userNickName"></open-data>
+        <!-- <view class="user-name">{{userInfo.nickName || '用户'}}</view> -->
+        <view class="user-phone">手机号：{{userInfo.phoneNumber || '未绑定'}}</view>
+      </view>
     </view>
-    <view class="user-details">
-      <view class="user-name">{{userInfo.nickName || '陈明远'}}</view>
-      <view class="user-phone">手机号：{{userInfo.phoneNumber || '138****5678'}}</view>
-    </view>
-  </view>
 
-  <!-- 账户管理区域 -->
-  <view class="section-title">账户管理</view>
-  <view class="settings-list">
-    <view class="settings-item">
-      <text>微信账号绑定</text>
-      <view class="item-right">已绑定</view>
+    <!-- 账户管理区域 -->
+    <view class="section-title">账户管理</view>
+    <view class="settings-list">
+      <view class="settings-item">
+        <text>微信账号绑定</text>
+        <view class="item-right">已绑定</view>
+      </view>
+      <view class="settings-item">
+        <text>适老化模式</text>
+        <switch checked="{{elderlyMode}}" bindchange="toggleElderlyMode"></switch>
+      </view>
+      <view class="settings-item">
+        <text>提醒设置</text>
+        <switch checked="{{reminderEnabled}}" bindchange="toggleReminder"></switch>
+      </view>
     </view>
-    <view class="settings-item">
-      <text>适老化模式</text>
-      <switch checked="{{elderlyMode}}" bindchange="toggleElderlyMode"></switch>
-    </view>
-    <view class="settings-item">
-      <text>提醒设置</text>
-      <switch checked="{{reminderEnabled}}" bindchange="toggleReminder"></switch>
-    </view>
-  </view>
 
-  <!-- 功能区域 -->
-  <view class="section-title">订阅与支付</view>
-  <view class="feature-item" bindtap="navigateToSubscription">
-    <text>增值服务</text>
-    <view class="item-right">
-      <view class="btn-upgrade">立即升级</view>
+    <!-- 功能区域 -->
+    <view class="section-title">订阅与支付</view>
+    <view class="feature-item" bindtap="navigateToSubscription">
+      <text>增值服务</text>
+      <view class="item-right">
+        <view class="btn-upgrade">立即升级</view>
+        <view class="arrow-right">></view>
+      </view>
+    </view>
+
+    <view class="feature-item" bindtap="navigateToOrders">
+      <text>订单管理</text>
       <view class="arrow-right">></view>
     </view>
-  </view>
 
-  <view class="feature-item" bindtap="navigateToOrders">
-    <text>订单管理</text>
-    <view class="arrow-right">></view>
-  </view>
-
-  <!-- 问题反馈 -->
-  <view class="feature-item" bindtap="navigateToFeedback">
-    <text>问题反馈</text>
-    <view class="arrow-right">></view>
-  </view>
-
-  <!-- 关于我们 -->
-  <view class="feature-item" bindtap="navigateToAbout">
-    <text>关于我们</text>
-    <view class="version-info">当前版本 2.0.1</view>
-  </view>
-
-  <!-- 退出登录按钮 -->
-  <view class="logout-btn" bindtap="logout">退出登录</view>
-
-  <!-- 底部导航栏 -->
-  <view class="tabbar">
-    <view class="tab-item" bindtap="switchTab" data-tab="home">
-      <image src="/imgs/home.png" mode="aspectFit"></image>
-      <text>首页</text>
+    <!-- 问题反馈 -->
+    <view class="feature-item" bindtap="navigateToFeedback">
+      <text>问题反馈</text>
+      <view class="arrow-right">></view>
     </view>
-    <view class="tab-item" bindtap="switchTab" data-tab="medicine">
-      <image src="/imgs/medicine.png" mode="aspectFit"></image>
-      <text>用药</text>
+
+    <!-- 关于我们 -->
+    <view class="feature-item" bindtap="navigateToAbout">
+      <text>关于我们</text>
+      <view class="version-info">当前版本 2.0.1</view>
     </view>
-    <view class="tab-item" bindtap="switchTab" data-tab="calendar">
-      <image src="/imgs/calendar.png" mode="aspectFit"></image>
-      <text>日程</text>
-    </view>
-    <view class="tab-item active" bindtap="switchTab" data-tab="profile">
-      <image src="/imgs/profile-active.png" mode="aspectFit"></image>
-      <text>我的</text>
-    </view>
-  </view>
+
+    <!-- 退出登录按钮 -->
+    <view class="logout-btn" bindtap="logout">退出登录</view>
+  </block>
 </view>

@@ -5,6 +5,7 @@ Page({
    */
   data: {
     medicineName: '',
+    dosage: "",
     dosageTypes: ['片', '毫克', '毫升', '克', '粒', '袋', '支'],
     dosageTypeIndex: 0,
     manufacturer: '',
@@ -24,6 +25,16 @@ Page({
   inputMedicineName: function(e) {
     this.setData({
       medicineName: e.detail.value
+    });
+  },
+
+  
+  /**
+   * 输入剂量
+   */
+  inputMedicineDosage: function(e) {
+    this.setData({
+      dosage: e.detail.value
     });
   },
 
