@@ -27,62 +27,40 @@ Page({
   /**
    * 处理登录/注册点击
    */
-  handleLogin: function() {
+   handleLogin: async function() {
     // 先获取用户信息
-    wx.getUserProfile({
-      desc: '用于完善用户资料',
-      success: (res) => {
-          console.log(res);
-        // 获取用户信息成功后，再获取登录凭证
-        wx.login({
-          success: (loginRes) => {
-            if (loginRes.code) {
-              // 这里可以将code和用户信息一起发送到后端进行验证
-              console.log('登录凭证：', loginRes.code);
-              
-              // 登录成功后更新状态
-              this.setData({
-                isLoggedIn: true,
-                userInfo: {
-                  nickName: res.userInfo.nickName,
-                  avatarUrl: res.userInfo.avatarUrl,
-                  phoneNumber: '' // 手机号可以通过其他接口获取
-                }
-              });
-              
-              // 保存用户信息到本地存储
-              wx.setStorageSync('userInfo', res.userInfo);
-              wx.setStorageSync('isLoggedIn', true);
-              
-              wx.showToast({
-                title: '登录成功',
-                icon: 'success'
-              });
-            } else {
-              console.error('登录失败', loginRes);
-              wx.showToast({
-                title: '登录失败',
-                icon: 'none'
-              });
-            }
-          },
-          fail: (err) => {
-            console.error('微信登录失败', err);
-            wx.showToast({
-              title: '登录失败',
-              icon: 'none'
-            });
+    // 调用云函数更新用户信息
+    const result = await CloudFunctionUtils.callFunction('userInfo', {
+        action: 'getInfo',
+      });
+      console.log(result);
+      if (CloudFunctionUtils.isCallSuccess(result)) {
+        // 登录成功后更新状态
+        this.setData({
+          isLoggedIn: true,
+          userInfo: {
+            // nickName: result.userInfo.nickName,
+            // avatarUrl: result.userInfo.avatarUrl,
+            phoneNumber: '' // 手机号可以通过其他接口获取
           }
         });
-      },
-      fail: (err) => {
-        console.error('获取用户信息失败', err);
+        
+        // 保存用户信息到本地存储
+        // wx.setStorageSync('userInfo', result.userInfo);
+        wx.setStorageSync('isLoggedIn', true);
+        wx.setStorageSync('openid', result.data.openid);
+        
+        wx.showToast({
+          title: '登录成功',
+          icon: 'success'
+        });
+      } else {
+        console.error('用户信息更新失败', result.message);
         wx.showToast({
           title: '登录失败',
           icon: 'none'
         });
       }
-    });
   },
 
   getUserInfo:function(e){
@@ -210,3 +188,4 @@ Page({
     });
   }
 })
+const CloudFunctionUtils = require('../../utils/cloudFunctionUtils');
