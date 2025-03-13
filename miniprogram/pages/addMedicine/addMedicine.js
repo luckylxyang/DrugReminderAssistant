@@ -79,17 +79,25 @@ Page({
    * 时间选择器变化
    */
   timeChange: function(e) {
+    const index = e.currentTarget.dataset.index;
+    const medicineTimes = this.data.medicineTimes;
+    medicineTimes[index] = e.detail.value;
+    
     this.setData({
-      time: e.detail.value
+      medicineTimes: medicineTimes
     });
   },
 
   /**
-   * 删除当前时间
+   * 删除指定时间
    */
-  deleteTime: function() {
+  deleteTime: function(e) {
+    const index = e.currentTarget.dataset.index;
+    const medicineTimes = this.data.medicineTimes;
+    medicineTimes.splice(index, 1);
+    
     this.setData({
-      time: '08:00'
+      medicineTimes: medicineTimes
     });
   },
 
@@ -98,16 +106,11 @@ Page({
    */
   addMedicineTime: function() {
     const medicineTimes = this.data.medicineTimes;
-    medicineTimes.push(this.data.time);
+    medicineTimes.push('08:00');
     
     this.setData({
       medicineTimes: medicineTimes,
       time: '08:00' // 重置时间选择器
-    });
-    
-    wx.showToast({
-      title: '添加成功',
-      icon: 'success'
     });
   },
 
@@ -185,10 +188,12 @@ Page({
     
     // 构建药品数据对象
     const medicineData = {
-      name: this.data.medicineName,
-      dosage: `${this.data.dosageTypes[this.data.dosageTypeIndex]}`,
-      manufacturer: this.data.manufacturer,
-      instructions: this.data.instructions,
+      drug_name: this.data.medicineName,
+      create_type: "normal",
+      drug_dosage: this.data.dosage,
+      drug_dosage_unit: `${this.data.dosageTypes[this.data.dosageTypeIndex]}`,
+      drug_producer: this.data.manufacturer,
+      drug_remark: this.data.instructions,
       frequency: this.data.frequency,
       times: this.data.medicineTimes.length > 0 ? this.data.medicineTimes : [this.data.time],
       mealOption: this.data.mealOption,
@@ -196,22 +201,49 @@ Page({
         app: this.data.appNotification,
         sms: this.data.smsNotification,
         phone: this.data.phoneNotification
-      }
+      },
+      status: 'ongoing',
+      createTime: new Date(),
+      create_user_id: getApp().globalData.userId || ''
     };
     
-    console.log('添加药品数据:', medicineData);
-    
-    // 这里应该将数据保存到数据库或本地存储
-    // 示例中仅显示提示
-    wx.showToast({
-      title: '添加成功',
-      icon: 'success',
-      success: () => {
-        // 延迟返回上一页
-        setTimeout(() => {
-          wx.navigateBack();
-        }, 1500);
+    wx.showLoading({
+      title: '保存中...'
+    });
+
+    // 调用云函数添加药品计划
+    wx.cloud.callFunction({
+      name: 'medicationPlan',
+      data: {
+        action: 'add',
+        data: medicineData
       }
+    }).then(res => {
+      wx.hideLoading();
+      if (res.result && res.result.success) {
+        wx.showToast({
+          title: '添加成功',
+          icon: 'success',
+          success: () => {
+            // 延迟返回上一页
+            setTimeout(() => {
+              wx.navigateBack();
+            }, 1500);
+          }
+        });
+      } else {
+        wx.showToast({
+          title: '添加失败',
+          icon: 'error'
+        });
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({
+        title: '添加失败',
+        icon: 'error'
+      });
+      console.error('添加药品计划失败:', err);
     });
   },
 

@@ -32,6 +32,7 @@ Page({
     wx.getUserProfile({
       desc: '用于完善用户资料',
       success: (res) => {
+          console.log(res);
         // 获取用户信息成功后，再获取登录凭证
         wx.login({
           success: (loginRes) => {

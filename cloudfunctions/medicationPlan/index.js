@@ -34,9 +34,17 @@ exports.main = async (event, context) => {
 // 添加药品计划
 async function addPlan(data) {
   try {
+    const {
+        OPENID,
+        APPID,
+        UNIONID,
+        ENV,
+      } = cloud.getWXContext()
+    // console.log("id", OPENID, UNIONID);
     const result = await medicationPlanCollection.add({
       data: {
         ...data,
+        create_user_id: OPENID,
         createTime: db.serverDate(),
         updateTime: db.serverDate()
       }

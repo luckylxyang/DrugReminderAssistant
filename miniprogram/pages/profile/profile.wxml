@@ -5,7 +5,8 @@
     <view class="default-avatar">
       <image src="/imgs/default-avatar.png" mode="aspectFill"></image>
     </view>
-    <view class="login-btn"  bindtap="handleLogin">登录/注册</view>
+    <button  class="login-btn"  bindtap="handleLogin">登录/注册</button>
+    
     <view class="login-tip">登录后查看更多信息</view>
   </view>
 

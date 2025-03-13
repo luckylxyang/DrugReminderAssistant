@@ -9,7 +9,7 @@
         <view class="input-group">
             <input class="input-field" placeholder="请输入药品名称" bindinput="inputMedicineName" value="{{medicineName}}"></input>
             <view class="voice-icon">
-                <image src="/imgs/ic_voice.png" mode="aspectFit"></image>
+                <image src="../../assets/imgs/ic_voice.png" mode="aspectFit"></image>
             </view>
         </view>
 
@@ -30,7 +30,7 @@
         <view class="input-group">
             <textarea class="textarea-field" placeholder="请输入用药说明" bindinput="inputInstructions" value="{{instructions}}"></textarea>
             <view class="voice-icon">
-                <image src="/imgs/voice.png" mode="aspectFit"></image>
+                <image src="../../assets/imgs/ic_voice.png" mode="aspectFit"></image>
             </view>
         </view>
     </view>
@@ -44,18 +44,23 @@
             <view class="frequency-option {{frequency === 'custom' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="custom">自定义</view>
         </view>
 
-        <view class="time-picker">
-            <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="timeChange">
-                <view class="time-display">
-                    <text>{{time}}</text>
-                    <view class="clock-icon">
-                        <image src="/imgs/clock.png" mode="aspectFit"></image>
+        <!-- 服药时间列表 -->
+        <view class="time-list">
+            <block wx:for="{{medicineTimes}}" wx:key="index">
+                <view class="time-picker">
+                    <picker mode="time" value="{{item}}" start="00:00" end="23:59" bindchange="timeChange" data-index="{{index}}">
+                        <view class="time-display">
+                            <text>{{item}}</text>
+                            <view class="clock-icon">
+                                <image src="/imgs/clock.png" mode="aspectFit"></image>
+                            </view>
+                        </view>
+                    </picker>
+                    <view class="delete-time" bindtap="deleteTime" data-index="{{index}}">
+                        <image class="meal-option" src="/imgs/ic_delete.png" mode="aspectFit"></image>
                     </view>
                 </view>
-            </picker>
-            <view class="delete-time" bindtap="deleteTime">
-                <image class="meal-option" src="/imgs/ic_delete.png" mode="aspectFit"></image>
-            </view>
+            </block>
         </view>
 
         <view class="add-time-btn" bindtap="addMedicineTime">

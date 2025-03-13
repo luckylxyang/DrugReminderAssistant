@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "添加药品"
+  "navigationBarTitleText": "添加药品",
+  "enablePullDownRefresh": false
 }

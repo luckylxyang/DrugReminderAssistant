@@ -5,7 +5,7 @@
   background-color: #f5f5f5;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 120rpx;
+  padding-bottom: 160rpx;
   padding-top: 32rpx;
   padding-left: 32rpx;
   padding-right: 32rpx;
@@ -153,14 +153,43 @@
 }
 
 .time-display {
-  flex: 1;
-  height: 120rpx;
-  background-color: #f5f5f5;
-  border-radius: 32rpx;
-  padding: 0 30rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.time-input {
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.delete-time {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 32rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-time image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.add-time-btn {
+  text-align: center;
+  color: #2196F3;
+  font-size: 28rpx;
+  padding: 20rpx 0;
+  border: 2rpx dashed #2196F3;
+  border-radius: var(--radius-xl);
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  cursor: pointer;
 }
 
 .clock-icon image {
@@ -181,13 +210,6 @@
 .delete-time image {
   width: 40rpx;
   height: 40rpx;
-}
-
-.add-time-btn {
-  text-align: center;
-  color: #2196F3;
-  font-size: 28rpx;
-  padding: 20rpx 0;
 }
 
 /* 服药时间选项 */
