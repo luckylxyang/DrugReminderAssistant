@@ -1,12 +1,13 @@
 /* pages/home/home.wxss */
 
 .container {
-  padding: 0;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+  padding-bottom: 32rpx;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: #f5f5f5;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 120rpx; /* 为底部导航留出空间 */
 }
 
 /* 顶部标题栏 */
@@ -32,18 +33,17 @@
 
 /* 日期显示 */
 .date-container {
-  background-color: white;
   padding: 30rpx 40rpx;
   text-align: center;
 }
 
 .date {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 500;
 }
 
 .weekday {
-  font-size: 28rpx;
+  font-size: 32rpx;
   color: #666;
   margin-top: 10rpx;
 }
@@ -71,7 +71,7 @@
 .section-title {
   font-size: 32rpx;
   font-weight: 500;
-  padding: 30rpx 40rpx 20rpx;
+  padding: 20rpx, 0rpx;
 }
 
 .medicine-list {
@@ -155,6 +155,8 @@
   font-size: 28rpx;
   color: #757575;
   background-color: #f5f5f5;
+  border-radius: var(--radius-xl);
+  margin: 8rpx;
 }
 
 .time-slot.active {
@@ -247,16 +249,15 @@
 .add-button {
   position: fixed;
   right: 40rpx;
-  bottom: 140rpx;
-  width: 100rpx;
-  height: 100rpx;
-  background-color: #2196F3;
-  border-radius: 50%;
+  bottom: 100rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 60rpx;
-  box-shadow: 0 4rpx 20rpx rgba(33, 150, 243, 0.4);
+  z-index: 101;
+}
+
+.add-button image {
+  width: 100rpx;
+  height: 100rpx;
   z-index: 101;
 }

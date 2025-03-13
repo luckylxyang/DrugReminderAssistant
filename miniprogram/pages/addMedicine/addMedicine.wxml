@@ -1,6 +1,6 @@
 <view class="container">
     <!-- 药品信息 -->
-    <view class="section">
+    <view class="card">
         <view class="section-header">
             <view >药品信息</view>
             <image src="/imgs/ic_scan.png" mode="aspectFit" class="section-scan"></image>
@@ -36,7 +36,7 @@
     </view>
 
     <!-- 用药计划 -->
-    <view class="section">
+    <view class="card common-margin-top">
         <view class="section-title">用药计划</view>
         <view class="frequency-selector">
             <view class="frequency-option {{frequency === 'daily' ? 'active' : ''}}" bindtap="selectFrequency" data-frequency="daily">每日</view>
@@ -70,7 +70,7 @@
     </view>
 
     <!-- 提醒方式 -->
-    <view class="section">
+    <view class="card common-margin-top">
         <view class="section-title">提醒方式</view>
         <view class="reminder-options">
             <view class="reminder-option">
