@@ -5,6 +5,7 @@
     "pages/addMedicine/addMedicine",
     "pages/medicationPlanList/medicationPlanList",
     "pages/profile/profile",
+    "pages/profile/userInfo/userInfo",
     "pages/statistics/statistics"
   ],
   "tabBar": {

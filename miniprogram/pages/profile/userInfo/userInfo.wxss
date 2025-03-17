@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx;
+}
+
+.avatar-section {
+  margin-bottom: 40rpx;
+}
+
+.avatar-wrapper {
+  padding: 0;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  background: none;
+}
+
+.avatar-wrapper::after {
+  border: none;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.nickname-section {
+  width: 100%;
+  padding: 0 30rpx;
+}
+
+.nickname-input {
+  width: 100%;
+  height: 88rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  font-size: 32rpx;
+}
+
+.input-placeholder {
+  color: #999;
+}

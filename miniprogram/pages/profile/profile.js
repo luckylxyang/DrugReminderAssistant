@@ -28,39 +28,37 @@ Page({
    * 处理登录/注册点击
    */
    handleLogin: async function() {
-    // 先获取用户信息
-    // 调用云函数更新用户信息
+    // 先调用云函数获取用户信息
     const result = await CloudFunctionUtils.callFunction('userInfo', {
-        action: 'getInfo',
+      action: 'getInfo'
+    });
+
+    if (CloudFunctionUtils.isCallSuccess(result) && result.data) {
+      // 有用户记录，直接更新本地存储并登录
+      const userInfo = result.data;
+      this.setData({
+        isLoggedIn: true,
+        userInfo: {
+          nickName: userInfo.nickName,
+          avatarUrl: userInfo.avatarUrl,
+          phoneNumber: userInfo.phoneNumber || ''
+        }
       });
-      console.log(result);
-      if (CloudFunctionUtils.isCallSuccess(result)) {
-        // 登录成功后更新状态
-        this.setData({
-          isLoggedIn: true,
-          userInfo: {
-            // nickName: result.userInfo.nickName,
-            // avatarUrl: result.userInfo.avatarUrl,
-            phoneNumber: '' // 手机号可以通过其他接口获取
-          }
-        });
-        
-        // 保存用户信息到本地存储
-        // wx.setStorageSync('userInfo', result.userInfo);
-        wx.setStorageSync('isLoggedIn', true);
-        wx.setStorageSync('openid', result.data.openid);
-        
-        wx.showToast({
-          title: '登录成功',
-          icon: 'success'
-        });
-      } else {
-        console.error('用户信息更新失败', result.message);
-        wx.showToast({
-          title: '登录失败',
-          icon: 'none'
-        });
-      }
+      
+      // 保存用户信息到本地存储
+      wx.setStorageSync('userInfo', userInfo);
+      wx.setStorageSync('isLoggedIn', true);
+      
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success'
+      });
+    } else {
+      // 无用户记录，跳转到信息输入页面
+      wx.navigateTo({
+        url: '/pages/profile/userInfo/userInfo'
+      });
+    }
   },
 
   getUserInfo:function(e){
@@ -186,6 +184,29 @@ Page({
         }
       }
     });
-  }
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function() {
+    // 从本地存储获取登录状态和用户信息
+    const isLoggedIn = wx.getStorageSync('isLoggedIn') || false;
+    const userInfo = wx.getStorageSync('userInfo') || {
+      nickName: '',
+      phoneNumber: '',
+      avatarUrl: '/imgs/default-avatar.png'
+    };
+    console.log(userInfo);
+    // 更新页面状态
+    this.setData({
+      isLoggedIn,
+      userInfo: {
+        nickName: userInfo.nickName || '',
+        phoneNumber: userInfo.phoneNumber || '',
+        avatarUrl: userInfo.avatarUrl || '/imgs/default-avatar.png'
+      }
+    });
+  },
 })
 const CloudFunctionUtils = require('../../utils/cloudFunctionUtils');

@@ -6,6 +6,7 @@ cloud.init({
 })
 
 const db = cloud.database()
+const userCollection = db.collection('userInfo')
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -15,8 +16,8 @@ exports.main = async (event, context) => {
   switch (action) {
     case 'getInfo':
       return await getUserInfo(wxContext)
-    // case 'updateInfo':
-    //   return await updateUserInfo(data, wxContext)
+    case 'updateInfo':
+      return await updateUserInfo(data, wxContext)
     default:
       return {
         success: false,
@@ -31,15 +32,14 @@ async function getUserInfo(wxContext) {
     const { OPENID } = wxContext
     
     // 查询用户信息
-    // const userInfo = await userCollection.where({
-    //   _openid: OPENID
-    // }).get()
+    const userInfo = await userCollection.where({
+      _openid: OPENID
+    }).get()
 
+    console.log(userInfo);
     return {
       success: true,
-      data: {
-        openid: OPENID,
-      },
+      data: userInfo.data[0],
       message: '获取成功'
     }
   } catch (err) {

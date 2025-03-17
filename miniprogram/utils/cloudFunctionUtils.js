@@ -34,7 +34,8 @@ class CloudFunctionUtils {
           })
           .then(res => {
             clearTimeout(timeoutId);
-            if (res.result && res.result.code === 0) {
+            console.log(res);
+            if (res.result && res.result.success) {
               resolve(res.result);
             } else {
               reject(new Error(res.result?.message || '云函数调用失败'));
