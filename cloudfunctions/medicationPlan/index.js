@@ -31,6 +31,28 @@ exports.main = async (event, context) => {
   }
 }
 
+// 发送订阅消息
+async function sendSubscribeMessage(openid, data) {
+  try {
+    const result = await cloud.openapi.subscribeMessage.send({
+      touser: openid,
+      templateId: "2TlgpFRE8JLU9JQ34fTG6GzyRPcvjhYPyYa-FafvgjU",
+      page: 'pages/home/home',
+      data: {
+        thing2: { value: data.drug_name }, // 药品名称
+        time3: { value: `${new Date().toLocaleDateString()} ${data.times[0]}` }, // 服药时间
+        thing4: { value: `${data.drug_dosage}${data.drug_dosage_unit}` }, // 服药剂量
+        thing5: { value: data.drug_remark || '无' }, // 服药说明
+        thing1: "用药时间到了" // 服药说明
+      }
+    });
+    return result;
+  } catch (err) {
+    console.error('发送订阅消息失败:', err);
+    return null;
+  }
+}
+
 // 添加药品计划
 async function addPlan(data) {
   try {
@@ -49,6 +71,11 @@ async function addPlan(data) {
         updateTime: db.serverDate()
       }
     })
+    // 如果用户订阅了提醒，发送订阅消息
+    if (data.subscribed && data.templateId) {
+      await sendSubscribeMessage(OPENID, data);
+    }
+
     return {
       success: true,
       data: result,

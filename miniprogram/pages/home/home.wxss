@@ -1,91 +1,162 @@
-/* pages/home/home.wxss */
-
 .container {
-  padding-left: 32rpx;
-  padding-right: 32rpx;
-  padding-bottom: 32rpx;
+  padding: 32rpx;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: #f5f5f5;
   min-height: 100vh;
   position: relative;
 }
 
-/* 顶部标题栏 */
-.header {
+/* 未登录状态样式 */
+.not-logged-in {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 30rpx 40rpx;
-  background-color: #2196F3;
-  color: white;
-  position: relative;
+  background-color: #fff;
+  padding: 60rpx 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
-.title {
+.default-avatar {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 75rpx;
+  overflow: hidden;
+  margin-bottom: 30rpx;
+}
+
+.default-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-text {
   font-size: 36rpx;
   font-weight: 500;
+  margin-bottom: 20rpx;
 }
 
-.notification-icon image {
-  width: 48rpx;
-  height: 48rpx;
+.login-btn {
+  background-color: #2196F3;
+  color: white;
+  font-size: 32rpx;
+  padding: 16rpx 80rpx;
+  border-radius: 40rpx;
+  margin: 30rpx 0;
 }
 
-/* 日期显示 */
-.date-container {
-  padding: 30rpx 40rpx;
+.login-tip {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  width: 100%;
+  margin-top: 20rpx;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #f8f8f8;
+  border-radius: 12rpx;
+}
+
+.feature-icon {
+  width: 64rpx;
+  height: 64rpx;
+  margin-bottom: 10rpx;
+}
+
+.feature-text {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 6rpx;
+}
+
+.feature-desc {
+  font-size: 24rpx;
+  color: #999;
   text-align: center;
 }
 
-.date {
-  font-size: 36rpx;
-  font-weight: 500;
-}
-
-.weekday {
-  font-size: 32rpx;
-  color: #666;
-  margin-top: 10rpx;
-}
-
-/* 重要药物提醒 */
+/* 已登录状态样式 */
 .important-reminder {
   display: flex;
   align-items: center;
   background-color: #FFEBEE;
-  padding: 20rpx 40rpx;
-  margin: 20rpx 0;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  border-radius: 12rpx;
 }
 
 .warning-icon {
-  margin-right: 20rpx;
+  margin-right: 16rpx;
   font-size: 32rpx;
 }
 
 .warning-text {
   color: #F44336;
   font-size: 28rpx;
+  flex: 1;
 }
 
-/* 待服用药物列表 */
+.date-container {
+  background-color: #fff;
+  padding: 32rpx;
+  border-radius: 12rpx;
+  margin-bottom: 24rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.date {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.weekday {
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 8rpx;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
 .section-title {
   font-size: 32rpx;
-  font-weight: 500;
-  padding: 20rpx, 0rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+  padding: 0 8rpx;
 }
 
 .medicine-list {
-  padding: 0 30rpx;
+  padding: 0 8rpx;
 }
 
 .medicine-card {
-  background-color: white;
+  background-color: #f8f8f8;
   border-radius: 12rpx;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  align-items: center;
 }
 
 .medicine-info {
@@ -99,7 +170,7 @@
   border-radius: 20rpx;
   background-color: #E0E0E0;
   color: #757575;
-  margin-bottom: 16rpx;
+  margin-bottom: 12rpx;
 }
 
 .medicine-tag.urgent {
@@ -110,85 +181,77 @@
 .medicine-name {
   font-size: 32rpx;
   font-weight: 500;
-  margin-bottom: 10rpx;
+  color: #333;
+  margin-bottom: 8rpx;
 }
 
 .medicine-dosage {
   font-size: 28rpx;
-  color: #757575;
+  color: #666;
 }
 
 .medicine-time {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: flex-end;
 }
 
 .time-remaining {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #F44336;
-  margin-bottom: 20rpx;
+  margin-bottom: 16rpx;
 }
 
 .take-button {
   background-color: #2196F3;
   color: white;
-  font-size: 28rpx;
-  padding: 12rpx 30rpx;
-  border-radius: 30rpx;
+  font-size: 26rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
 }
 
-/* 时间段选择器 */
 .time-selector {
   display: flex;
-  background-color: white;
-  margin: 30rpx 30rpx 20rpx;
+  background-color: #f8f8f8;
   border-radius: 12rpx;
-  overflow: hidden;
+  padding: 8rpx;
+  margin-bottom: 24rpx;
 }
 
 .time-slot {
   flex: 1;
   text-align: center;
-  padding: 20rpx 0;
+  padding: 16rpx 0;
   font-size: 28rpx;
-  color: #757575;
-  background-color: #f5f5f5;
-  border-radius: var(--radius-xl);
-  margin: 8rpx;
+  color: #666;
+  border-radius: 8rpx;
+  margin: 0 4rpx;
+  transition: all 0.3s;
 }
 
 .time-slot.active {
   background-color: #2196F3;
   color: white;
-  font-weight: 500;
 }
 
-/* 药物时间表 */
 .schedule-list {
-  padding: 0 30rpx;
+  padding: 0 8rpx;
 }
 
 .schedule-item {
-  background-color: white;
-  border-radius: 12rpx;
-  padding: 20rpx 30rpx;
-  margin-bottom: 20rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
-}
-
-.active-schedule {
-  border-left: 8rpx solid #F44336;
+  padding: 20rpx;
+  background-color: #f8f8f8;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
 }
 
 .schedule-time {
   font-size: 32rpx;
   font-weight: 500;
-  margin-right: 30rpx;
   color: #333;
+  margin-right: 24rpx;
 }
 
 .schedule-details {
@@ -196,68 +259,50 @@
 }
 
 .schedule-medicine-name {
-  font-size: 30rpx;
-  font-weight: 500;
-  margin-bottom: 6rpx;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 4rpx;
 }
 
-.schedule-medicine-dosage {
-  font-size: 26rpx;
-  color: #757575;
-  margin-bottom: 6rpx;
-}
-
+.schedule-medicine-dosage,
 .schedule-frequency {
-  font-size: 26rpx;
-  color: #9E9E9E;
+  font-size: 24rpx;
+  color: #666;
 }
 
-/* 底部导航栏 */
-.tabbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 110rpx;
-  background-color: white;
-  display: flex;
-  border-top: 1rpx solid #E0E0E0;
-  z-index: 100;
-}
-
-.tab-item {
-  flex: 1;
+.empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: 24rpx;
-  color: #757575;
+  padding: 48rpx 0;
 }
 
-.tab-item.active {
-  color: #2196F3;
+.empty-state image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 24rpx;
 }
 
-.tab-item image {
-  width: 48rpx;
-  height: 48rpx;
-  margin-bottom: 6rpx;
+.empty-state text {
+  font-size: 28rpx;
+  color: #999;
 }
 
-/* 悬浮添加按钮 */
 .add-button {
   position: fixed;
-  right: 40rpx;
-  bottom: 100rpx;
+  right: 48rpx;
+  bottom: 48rpx;
+  width: 96rpx;
+  height: 96rpx;
+  background-color: #2196F3;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 101;
+  box-shadow: 0 4rpx 16rpx rgba(33, 150, 243, 0.3);
 }
 
 .add-button image {
-  width: 100rpx;
-  height: 100rpx;
-  z-index: 101;
+  width: 48rpx;
+  height: 48rpx;
 }

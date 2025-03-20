@@ -176,7 +176,7 @@ Page({
   /**
    * 确认添加药品
    */
-  confirmAdd: function() {
+  confirmAdd: async function() {
     // 表单验证
     if (!this.data.medicineName) {
       wx.showToast({
@@ -184,6 +184,23 @@ Page({
         icon: 'none'
       });
       return;
+    }
+
+    // 请求订阅消息权限
+    const tmplIds = ['2TlgpFRE8JLU9JQ34fTG6GzyRPcvjhYPyYa-FafvgjU']; // 替换为您的模板ID
+    try {
+      const res = await wx.requestSubscribeMessage({
+        tmplIds: tmplIds
+      });
+      
+      // 用户同意了订阅，记录订阅状态
+      if (res[tmplIds[0]] === 'accept') {
+        console.log('用户同意订阅消息');
+      } else {
+        console.log('用户拒绝订阅消息');
+      }
+    } catch (err) {
+      console.error('订阅消息请求失败:', err);
     }
     
     // 构建药品数据对象
@@ -216,7 +233,11 @@ Page({
       name: 'medicationPlan',
       data: {
         action: 'add',
-        data: medicineData
+        data: {
+          ...medicineData,
+          subscribed: true, // 添加订阅状态
+          templateId: '2TlgpFRE8JLU9JQ34fTG6GzyRPcvjhYPyYa-FafvgjU' // 添加模板ID
+        }
       }
     }).then(res => {
       wx.hideLoading();

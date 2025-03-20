@@ -1,62 +1,105 @@
 <view class="container">
-
-    <!-- 重要药物提醒 -->
-    <view class="important-reminder" wx:if="{{hasImportantMedicine}}">
-        <view class="warning-icon">⚠️</view>
-        <view class="warning-text">{{importantMedicineMessage}}</view>
+    <!-- 未登录状态 -->
+    <view wx:if="{{!isLoggedIn}}" class="not-logged-in">
+        <view class="default-avatar">
+            <image src="../../assets/imgs/medicine-bottle.png" mode="aspectFill"></image>
+        </view>
+        <view class="welcome-text">欢迎使用服药提醒</view>
+        <view class="login-tip">登录后开始记录您的用药计划，我们将帮助您规律用药</view>
+        <button class="login-btn" bindtap="handleLogin">登录</button>
+        <!-- 功能介绍区域 -->
+        <view class="feature-grid">
+            <view class="feature-item">
+                <image class="feature-icon" src="/imgs/ic_drug.png" mode="aspectFit"></image>
+                <text class="feature-text">用药提醒</text>
+                <text class="feature-desc">及时提醒按时服药</text>
+            </view>
+            <view class="feature-item">
+                <image class="feature-icon" src="/imgs/ic_scan.png" mode="aspectFit"></image>
+                <text class="feature-text">用药记录</text>
+                <text class="feature-desc">记录每日服药情况</text>
+            </view>
+            <view class="feature-item">
+                <image class="feature-icon" src="/imgs/ic_voice.png" mode="aspectFit"></image>
+                <text class="feature-text">亲友关怀</text>
+                <text class="feature-desc">与家人共同关注</text>
+            </view>
+            <view class="feature-item">
+                <image class="feature-icon" src="/imgs/ic_voice.png" mode="aspectFit"></image>
+                <text class="feature-text">亲友关怀</text>
+                <text class="feature-desc">与家人共同关注</text>
+            </view>
+        </view>
     </view>
 
-    <!-- 日期显示 -->
-    <view class="date-container">
-        <view class="date">{{date}}</view>
-        <view class="weekday">{{weekday}}</view>
-    </view>
+    <!-- 已登录状态 -->
+    <block wx:else>
+        <!-- 重要药物提醒 -->
+        <view class="important-reminder" wx:if="{{hasImportantMedicine}}">
+            <view class="warning-icon">⚠️</view>
+            <view class="warning-text">{{importantMedicineMessage}}</view>
+        </view>
 
+        <!-- 日期显示 -->
+        <view class="date-container">
+            <view class="date">{{date}}</view>
+            <view class="weekday">{{weekday}}</view>
+        </view>
 
-    <!-- 待服用药物内容 -->
-    <view class="card">
-        <view class="section-title">待服用药物</view>
-        <view class="medicine-list">
-            <block wx:for="{{medicines}}" wx:key="name">
-                <view class="medicine-card">
-                    <view class="medicine-info">
-                        <view class="medicine-tag {{item.isUrgent ? 'urgent' : ''}}">{{item.isUrgent ? '紧急' : '普通'}}</view>
-                        <view class="medicine-name">{{item.name}}</view>
-                        <view class="medicine-dosage">{{item.dosage}}</view>
+        <!-- 待服用药物内容 -->
+        <view class="card medicine-section">
+            <view class="section-title">待服用药物</view>
+            <view class="medicine-list">
+                <block wx:if="{{medicines.length > 0}}">
+                    <view wx:for="{{medicines}}" wx:key="name" class="medicine-card">
+                        <view class="medicine-info">
+                            <view class="medicine-tag {{item.isUrgent ? 'urgent' : ''}}">{{item.isUrgent ? '紧急' : '普通'}}</view>
+                            <view class="medicine-name">{{item.name}}</view>
+                            <view class="medicine-dosage">{{item.dosage}}</view>
+                        </view>
+                        <view class="medicine-time">
+                            <view class="time-remaining">剩余 {{item.remainingTime}} {{item.timeUnit}}</view>
+                            <view class="take-button" bindtap="takeMedicine" data-index="{{index}}">立即服用</view>
+                        </view>
                     </view>
-                    <view class="medicine-time">
-                        <view class="time-remaining">剩余 {{item.remainingTime}} {{item.timeUnit}}</view>
-                        <view class="take-button" bindtap="takeMedicine" data-index="{{index}}">立即服用</view>
-                    </view>
+                </block>
+                <view wx:else class="empty-state">
+                    <image src="../../assets/imgs/empty-medicine.png" mode="aspectFit"></image>
+                    <text>暂无待服用药物</text>
                 </view>
-            </block>
-        </view>
-    </view>
-
-    <view class="card common-margin-top">
-        <!-- 时间段选择器 -->
-        <view class="time-selector">
-            <view class="time-slot {{activeTimeSlot == 'morning' ? 'active' : ''}}" bindtap="switchTimeSlot" data-slot="morning">早上</view>
-            <view class="time-slot {{activeTimeSlot == 'noon' ? 'active' : ''}}" bindtap="switchTimeSlot" data-slot="noon">中午</view>
-            <view class="time-slot {{activeTimeSlot == 'evening' ? 'active' : ''}}" bindtap="switchTimeSlot" data-slot="evening">晚上</view>
+            </view>
         </view>
 
-        <!-- 药物时间表 -->
-        <view class="schedule-list">
-            <block wx:for="{{schedules}}" wx:key="time">
-                <view class="schedule-item {{item.isActive ? 'active-schedule' : ''}}">
-                    <view class="schedule-time">{{item.time}}</view>
-                    <view class="schedule-details">
-                        <view class="schedule-medicine-name">{{item.name}}</view>
-                        <view class="schedule-medicine-dosage">{{item.dosage}}</view>
-                        <view class="schedule-frequency">{{item.frequency}}</view>
+        <!-- 用药时间表 -->
+        <view class="card schedule-section">
+            <view class="section-title">用药时间表</view>
+            <view class="time-selector">
+                <view class="time-slot {{activeTimeSlot === 'morning' ? 'active' : ''}}" bindtap="switchTimeSlot" data-slot="morning">早上</view>
+                <view class="time-slot {{activeTimeSlot === 'noon' ? 'active' : ''}}" bindtap="switchTimeSlot" data-slot="noon">中午</view>
+                <view class="time-slot {{activeTimeSlot === 'evening' ? 'active' : ''}}" bindtap="switchTimeSlot" data-slot="evening">晚上</view>
+            </view>
+
+            <view class="schedule-list">
+                <block wx:if="{{schedules.length > 0}}">
+                    <view wx:for="{{schedules}}" wx:key="time" class="schedule-item {{item.isActive ? 'active-schedule' : ''}}">
+                        <view class="schedule-time">{{item.time}}</view>
+                        <view class="schedule-details">
+                            <view class="schedule-medicine-name">{{item.name}}</view>
+                            <view class="schedule-medicine-dosage">{{item.dosage}}</view>
+                            <view class="schedule-frequency">{{item.frequency}}</view>
+                        </view>
                     </view>
+                </block>
+                <view wx:else class="empty-state">
+                    <image src="../../assets/imgs/empty-schedule.png" mode="aspectFit"></image>
+                    <text>暂无用药计划</text>
                 </view>
-            </block>
+            </view>
         </view>
-    </view>
-    <!-- 悬浮添加按钮 -->
-    <view class="add-button" bindtap="navigateToAddMedicine">
-        <image src="../../assets/imgs/ic_add.png"></image>
-    </view>
+
+        <!-- 悬浮添加按钮 -->
+        <view class="add-button" bindtap="navigateToAddMedicine">
+            <image src="../../assets/imgs/ic_add.png"></image>
+        </view>
+    </block>
 </view>

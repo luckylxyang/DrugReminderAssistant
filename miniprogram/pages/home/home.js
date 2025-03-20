@@ -1,9 +1,17 @@
 // pages/home/home.js
+const CloudFunctionUtils = require('../../utils/cloudFunctionUtils');
+
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    isLoggedIn: false, // 添加登录状态标志
+    userInfo: {
+      nickName: '',
+      phoneNumber: '',
+      avatarUrl: '/imgs/default-avatar.png'
+    },
     date: '2024 年 1 月 15 日',
     weekday: '星期一',
     hasImportantMedicine: true,
@@ -92,6 +100,43 @@ Page({
   },
 
   /**
+   * 处理登录/注册点击
+   */
+  handleLogin: async function() {
+    // 先调用云函数获取用户信息
+    const result = await CloudFunctionUtils.callFunction('userInfo', {
+      action: 'getInfo'
+    });
+
+    if (CloudFunctionUtils.isCallSuccess(result) && result.data) {
+      // 有用户记录，直接更新本地存储并登录
+      const userInfo = result.data;
+      this.setData({
+        isLoggedIn: true,
+        userInfo: {
+          nickName: userInfo.nickName,
+          avatarUrl: userInfo.avatarUrl,
+          phoneNumber: userInfo.phoneNumber || ''
+        }
+      });
+      
+      // 保存用户信息到本地存储
+      wx.setStorageSync('userInfo', userInfo);
+      wx.setStorageSync('isLoggedIn', true);
+      
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success'
+      });
+    } else {
+      // 无用户记录，跳转到信息输入页面
+      wx.navigateTo({
+        url: '/pages/profile/userInfo/userInfo'
+      });
+    }
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
@@ -108,6 +153,19 @@ Page({
       date: `${year} 年 ${month} 月 ${day} 日`,
       weekday: `星期${weekday}`
     });
+
+    // 从本地存储获取登录状态和用户信息
+    const isLoggedIn = wx.getStorageSync('isLoggedIn') || false;
+    const userInfo = wx.getStorageSync('userInfo') || {
+      nickName: '',
+      phoneNumber: '',
+      avatarUrl: '/imgs/default-avatar.png'
+    };
+
+    this.setData({
+      isLoggedIn: isLoggedIn,
+      userInfo: userInfo
+    });
   },
 
   /**
@@ -120,8 +178,38 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: async function () {
+    // 检查登录状态并更新
+    const isLoggedIn = wx.getStorageSync('isLoggedIn') || false;
+    const userInfo = wx.getStorageSync('userInfo') || {
+      nickName: '',
+      phoneNumber: '',
+      avatarUrl: '/imgs/default-avatar.png'
+    };
 
+    // 如果登录状态发生变化，更新页面数据
+    if (isLoggedIn !== this.data.isLoggedIn || 
+        JSON.stringify(userInfo) !== JSON.stringify(this.data.userInfo)) {
+      this.setData({
+        isLoggedIn: isLoggedIn,
+        userInfo: userInfo
+      });
+
+      // 如果已登录，刷新药物提醒数据
+      if (isLoggedIn) {
+        // TODO: 调用相关云函数获取最新的药物提醒数据
+        // 示例：更新药物列表
+        // const result = await CloudFunctionUtils.callFunction('drugPlan', {
+        //   action: 'getList'
+        // });
+        // if (CloudFunctionUtils.isCallSuccess(result)) {
+        //   this.setData({
+        //     medicines: result.data.medicines || [],
+        //     schedules: result.data.schedules || []
+        //   });
+        // }
+      }
+    }
   },
 
   /**
